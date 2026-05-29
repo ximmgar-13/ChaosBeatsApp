@@ -1,0 +1,19 @@
+name: Deploy Edge Functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/functions/**"
+
+jobs:
+  deploy:
+    name: Deploy to Supabase
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase functions deploy --project-ref ${{ vars.SUPABASE_PROJECT_ID }} --token ${{ secrets.SUPABASE_ACCESS_TOKEN }}
